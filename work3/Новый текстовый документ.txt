@@ -1,0 +1,18 @@
+pip install -U scikit-learn
+pip install dcor
+pip install panda
+pip install scipy
+ pip install tqdm
+ pip install deap
+pip install Hypothesis
+
+
+
+
+# validate the result
+for idx in range(train_set.shape[1]):
+    pea_score, p_value = pearsonr(train_set[:,idx], train_y)
+    print(f"The absolute value of the correlation between the {idx + 1} feature and target is {round(np.abs(pea_score),2)},p-value is {round(p_value,3)}")
+# so we should select the 1st and 7th features
+
+..
