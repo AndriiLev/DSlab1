@@ -1,0 +1,44 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+f1=pd.read_csv("d:/vuz/andre/dsbd/lab1/doing_data_science/dds_datasets/dds_ch2_nyt/nyt1.csv",sep=",");
+f2=pd.read_csv("d:/vuz/andre/dsbd/lab1/doing_data_science/dds_datasets/dds_ch2_nyt/nyt2.csv",sep=",")
+f3=pd.read_csv("d:/vuz/andre/dsbd/lab1/doing_data_science/dds_datasets/dds_ch2_nyt/nyt3.csv",sep=",")
+print(f2.head())
+fall=pd.concat([f1,f2,f3])
+fall.count()
+
+
+fall["Age_group"] = fall["Age"].apply(lambda x:" <18" if x<18 else "18-24"  if x<=24 else "25-34" if x<=34  else "35-44" if x<=44   else "45-54" if x<=54  else "55-64" if x<=64  else "65+")
+print(fall.groupby(["Age_group","Gender"])["Age"].count())
+fall_sum=fall.groupby(["Age_group"], as_index=False).sum()
+print(fall_sum)
+fall_sum["CAT"]=fall_sum["Clicks"]/fall_sum["Impressions"]*100
+diag=fall_sum[["Age_group","Impressions","CAT"]]
+print(diag)
+
+
+f, (ax1, ax2, ax3) = plt.subplots(3, figsize=(12,8))
+# matplotlib
+ax1.bar(diag.Age_group, diag.Impressions)
+# pandas
+diag.plot(x="Age_group", y="Impressions", kind="bar", ax=ax2)
+# seaborn
+#sns.barplot(x=diag.Age_group, y=diag.Impressions, ax=ax3)
+
+sns.lineplot(ax=ax3, x=diag.Age_group, y=diag.Impressions)
+plt.show()
+
+
+
+
+
+data_for_seborn= sns.load_dataset("diag")
+data_for_seborn.head()
+
+
+
+sns.lineplot(data=data_for_seborn, x="Age_group", y="Impressions")
+
+
